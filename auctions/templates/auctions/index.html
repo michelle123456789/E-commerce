@@ -2,6 +2,20 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    <div class=allListings>
+        {% for listing in listings %}
+            <div class="card" style="width:18rem">
+                {% if listing.url_picture %}
+                    <img src="{{ listing.url_picture }}" class="card-img-top" alt="{{ listing.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ listing.title }}</h5>
+                    <p class="card-text">{{ listing.description}}</p>
+                    <p class="card-text">{{ listing.starting_bid}} Fr.</p>
+                    <p>Listed by: {{ listing.user.username }}</p>
+                    <a href="{% url 'listing' listing.id %}" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

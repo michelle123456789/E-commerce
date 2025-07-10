@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{listing.title}}</h2>
+    <img src="{{ listing.url_picture }}" class="card-img-top" alt="{{ listing.title }}">
+    <p>{{listing.description}}</p>
+    <h3>{{listing.starting_bid}} Fr.</h3>
+    <form>
+        <p>Current bid <p>
+        <input class=card type = "text" value="bid">
+        <input class="btn btn-primary" type="submit" value="Bid">
+    </form>
+    <h5>Details:</h5>
+    <ul>
+        <li>Listed by: {{listing.user.username}}</li>
+        <li>Category: {{listing.category}}</li>
+    </ul>
+{% endblock %}

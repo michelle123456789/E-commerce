@@ -1,26 +1,44 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from .models import User
+from .models import User,Listing
+from .forms import ListingForm
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    listings=Listing.objects.all()
+    return render(request, "auctions/index.html",{
+        "listings":listings
+    })
 
 def newListing(request):
+    submitted = False
     if request.method == "POST":
-        title = request.POST["title"]
-        description = request.POST["description"]
-        starting_bid = request.POST["starting_bid"]
-        url_picture = request.POST["url_picture"]
-        category = request.POST["category"]
-        
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            listing = form.save(commit=False)  # don’t save yet
+            listing.user = request.user        # assign the currently logged-in user
+            form.save()
+            return HttpResponseRedirect(reverse("newListing") + "?submitted=True")
+    #did not click on create button -> either first clicked to add a new listing or redirected after adding a listing
     else:
-        return render(request, "auctions/newListing.html")
+        form = ListingForm()
+        #test if form submitted
+        if "submitted" in request.GET:
+            submitted = True
+    return render(request,"auctions/newListing.html",{
+        'form':form,
+        'submitted':submitted
+    })
 
+def listing(request,listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    return render(request, "auctions/listing.html",{
+        "listing": listing
+    })
 
 def login_view(request):
     if request.method == "POST":
