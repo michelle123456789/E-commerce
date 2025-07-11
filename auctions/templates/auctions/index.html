@@ -1,21 +1,26 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 
 {% block body %}
     <h2>Active Listings</h2>
     <div class=allListings>
         {% for listing in listings %}
             <div class="card" style="width:18rem">
-                {% if listing.url_picture %}
-                    <img src="{{ listing.url_picture }}" class="card-img-top" alt="{{ listing.title }}">
-                {% endif %}
+                <div class=image-listing>
+                    {% comment %} {% if listing.url_picture %}
+                        <img src="{{ listing.url_picture }}" class="card-img-top" alt="{{ listing.title }}"> {% endcomment %}
+                    {% if listing.category %}
+                        <img src="{% static 'auctions/' %}{{ listing.category|lower }}.jpeg" class="card-img-top" alt="{{ listing.category }}">
+                    {% else %}
+                        <img src="{% static 'auctions/default.png' %}" class="card-img-top" alt="No category">
+                    {% endif %}
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ listing.title }}</h5>
-                    <p class="card-text">{{ listing.description}}</p>
-                    <p class="card-text">{{ listing.starting_bid}} Fr.</p>
-                    <p>Listed by: {{ listing.user.username }}</p>
-                    <a href="{% url 'listing' listing.id %}" class="btn btn-primary">Details</a>
+                    <p class="card-text">{{ listing.description}}<br>Price: CHF {{ listing.starting_bid}}<br>Listed by: {{ listing.user.username }}</p>
+                    <a href="{% url 'listing' listing.id %}" class="btn btn-primary stretched-link">Details</a>
                 </div>
             </div>
-        {% endfor %}
+        {% endfor %}ssssssssssssssssssssssssss
     </div>
 {% endblock %}

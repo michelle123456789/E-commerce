@@ -2,11 +2,37 @@ body {
     padding: 10px;
 }
 
-.allListings{
-    display:flex;
-    flex-direction:row
+.allListings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: stretch; /* make all cards equal height */
 }
 
-.card{
-    margin:10px 10px
+.card {
+    display: flex;
+    flex-direction: column;
+}
+
+img{
+    max-width:500px
+}
+
+
+.image-listing{
+    padding:10px
+}
+
+.card-body {
+    flex-grow: 1; /*takes up all available space*/
+    display: flex;
+    flex-direction: column;
+    justify-content: end
+}
+
+.card-img.top{
+    height: 200px; /*all images have the same height*/
+    width: 100%; /*stretch across whole card*/
+    object-fit: contain; /*image scales without distortion*/
+    background-color: white;  
 }
