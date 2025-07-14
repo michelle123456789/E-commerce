@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 from .models import User,Listing
 from .forms import ListingForm
@@ -39,6 +41,24 @@ def listing(request,listing_id):
     return render(request, "auctions/listing.html",{
         "listing": listing
     })
+
+@login_required
+def watchlist(request):
+    watchlist = request.user.watchlist.all()
+    return render(request, "auctions/watchlist.html",{
+        "watchlist": watchlist
+    })
+
+@login_required
+def toggle_watchlist(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    if listing in request.user.watchlist.all():
+        request.user.watchlist.remove(listing)
+    else:
+        request.user.watchlist.add(listing)
+
+    return redirect("listing", listing_id=listing.id)
 
 def login_view(request):
     if request.method == "POST":

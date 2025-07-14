@@ -5,7 +5,10 @@ from commerce import settings
 
 class User(AbstractUser):
     #no additional fields added yet
-    pass
+    watchlist = models.ManyToManyField("Listing", blank=True, related_name="watched_by") #a user cna have many listings in their watchlist and a listing can be in many users's watchlists
+
+    '''user.watchlist.all()           # Listings the user is watching
+       listing.watched_by.all()       # Users who are watching this listing'''
 
 class Listing(models.Model):
     title = models.CharField(max_length=40)

@@ -3,6 +3,16 @@
 
 {% block body %}
     <h2>Listing: {{listing.title}}</h2>
+    {% if user.is_authenticated %}
+    <form action="{% url 'toggle_watchlist' listing.id %}" method="post">
+        {% csrf_token %}
+        {% if listing in user.watchlist.all %}
+            <button class="btn btn-secondary" type="submit">Remove from Watchlist</button>
+        {% else %}
+            <button class="btn btn-primary" type="submit">Add to Watchlist</button>
+        {% endif %}
+    </form>
+    {% endif %}
     {% comment %} <img src="{{ listing.url_picture }}" class="card-img-top" alt="{{ listing.title }}"> {% endcomment %}
     {% if listing.category %}
         <img src="{% static 'auctions/' %}{{ listing.category|lower }}.jpeg" class="card-img-top" alt="{{ listing.category }}">

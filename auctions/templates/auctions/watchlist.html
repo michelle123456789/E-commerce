@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>Your Watchlist</h2>
     <div class=allListings>
-        {% for listing in listings %}
+        {% for listing in watchlist %}
             <div class="card" style="width:18rem">
                 <div class=image-listing>
                     {% comment %} {% if listing.url_picture %}
